@@ -1,0 +1,262 @@
+[
+  {
+    "id": 1,
+    "name": "PureLine RO-100 Home Filter",
+    "category": "Home RO System",
+    "price": 299,
+    "image": "Assets/Images/ro100.jpg",
+    "specs": {
+      "capacity": "100 GPD",
+      "stages": 5,
+      "tank_size": "3.2 gallons",
+      "membrane": "TFC"
+    },
+    "description": "5-stage RO system suitable for home drinking water purification."
+  },
+  {
+    "id": 2,
+    "name": "AquaPro 75GPD RO Membrane",
+    "category": "RO Membrane",
+    "price": 49,
+    "image": "Assets/Images/membrane75.jpg",
+    "specs": {
+      "flow_rate": "75 GPD",
+      "rejection_rate": "98%",
+      "type": "Thin Film Composite"
+    },
+    "description": "High-quality 75 GPD TFC membrane for household RO systems."
+  },
+  {
+    "id": 3,
+    "name": "HydraPure Sediment Filter (PP5)",
+    "category": "Pre-Filter",
+    "price": 12,
+    "image": "Assets/Images/sediment5.jpg",
+    "specs": {
+      "micron": "5 micron",
+      "material": "Polypropylene",
+      "size": "10 inch"
+    },
+    "description": "Standard PP sediment filter for removing dirt and rust particles."
+  },
+  {
+    "id": 4,
+    "name": "CrystalCarbon GAC Filter",
+    "category": "Carbon Filter",
+    "price": 18,
+    "image": "Assets/Images/gacfilter.jpg",
+    "specs": {
+      "material": "Coconut Shell Carbon",
+      "type": "GAC",
+      "size": "10 inch"
+    },
+    "description": "Granular activated carbon filter for chlorine and odor removal."
+  },
+  {
+    "id": 5,
+    "name": "HydroBoost RO Booster Pump",
+    "category": "Pump",
+    "price": 85,
+    "image": "Assets/Images/boosterpump.jpg",
+    "specs": {
+      "power": "24V DC",
+      "pressure": "125 PSI",
+      "feature": "Auto-Shutoff Compatible"
+    },
+    "description": "Pressure-boosting pump for low-pressure household RO systems."
+  },
+  {
+    "id": 6,
+    "name": "SmartFlow UV Sterilization Module",
+    "category": "Post-Treatment",
+    "price": 110,
+    "image": "Assets/Images/uvmodule.jpg",
+    "specs": {
+      "wavelength": "254 nm",
+      "material": "Stainless Steel Chamber",
+      "flow_rate": "2 L/min"
+    },
+    "description": "UV module for final-stage sterilization after RO purification."
+  },
+  {
+    "id": 7,
+    "name": "BlueTank RO Storage Tank 4G",
+    "category": "Accessories",
+    "price": 39,
+    "image": "Assets/Images/tank4g.jpg",
+    "specs": {
+      "capacity": "4 gallons",
+      "material": "Food-Grade Steel",
+      "valve": "1/4 inch Ball Valve"
+    },
+    "description": "Pressurized storage tank for residential RO systems."
+  },
+  {
+    "id": 8,
+    "name": "PureLine Quick-Connect Tubing Kit",
+    "category": "Installation Kit",
+    "price": 22,
+    "image": "Assets/Images/tubingkit.jpg",
+    "specs": {
+      "size": "1/4 inch",
+      "length": "5 meters",
+      "rating": "High Pressure"
+    },
+    "description": "Tubing set for RO installation and maintenance."
+  },
+  {
+    "id": 9,
+    "name": "PureSoft Hard Water Softener Cartridge",
+    "category": "Specialty Filter",
+    "price": 29,
+    "image": "Assets/Images/softener.jpg",
+    "specs": {
+      "type": "Ion Exchange Resin",
+      "function": "Calcium & Magnesium Reduction",
+      "size": "10 inch"
+    },
+    "description": "Pre-treatment cartridge for hard water areas."
+  },
+  {
+    "id": 10,
+    "name": "AquaShield Leak Detector Sensor",
+    "category": "Safety",
+    "price": 25,
+    "image": "Assets/Images/leakdetector.jpg",
+    "specs": {
+      "feature": "Auto Shutoff",
+      "power": "Battery",
+      "sensor": "Water-Drop Detection"
+    },
+    "description": "Smart leak detector for RO systems."
+  },
+  {
+    "id": 11,
+    "name": "Commercial RO 500GPD System",
+    "category": "Commercial RO System",
+    "price": 850,
+    "image": "Assets/Images/commercial500.jpg",
+    "specs": {
+      "capacity": "500 GPD",
+      "frame": "Stainless Steel",
+      "pump": "High Pressure"
+    },
+    "description": "Compact commercial RO system for cafés and small businesses."
+  },
+  {
+    "id": 12,
+    "name": "RO-1000 Industrial Reverse Osmosis Unit",
+    "category": "Industrial RO System",
+    "price": 2600,
+    "image": "Assets/Images/industrial1000.jpg",
+    "specs": {
+      "capacity": "1000 L/hr",
+      "stages": "Multi-stage",
+      "pump": "SS High Pressure"
+    },
+    "description": "Industrial-grade RO purification system for factories."
+  },
+  {
+    "id": 13,
+    "name": "RO Mineralizer Cartridge",
+    "category": "Post-Treatment",
+    "price": 19,
+    "image": "Assets/Images/mineralizer.jpg",
+    "specs": {
+      "minerals": "Calcium, Magnesium, Potassium",
+      "ph_range": "7.5–8.5",
+      "life": "12 months"
+    },
+    "description": "Adds essential minerals back into RO-purified water."
+  },
+  {
+    "id": 14,
+    "name": "Carbon Block CTO Filter",
+    "category": "Carbon Filter",
+    "price": 17,
+    "image": "Assets/Images/cto.jpg",
+    "specs": {
+      "micron": "5 micron",
+      "type": "Carbon Block",
+      "chlorine_removal": "99%"
+    },
+    "description": "CTO filter to improve water taste and smell."
+  },
+  {
+    "id": 15,
+    "name": "RO Faucet Matte Black",
+    "category": "Accessories",
+    "price": 35,
+    "image": "Assets/Images/rofaucet.jpg",
+    "specs": {
+      "material": "Lead-Free Metal",
+      "valve": "Ceramic",
+      "type": "Single Handle"
+    },
+    "description": "Dedicated matte-black faucet for RO drinking water."
+  },
+  {
+    "id": 16,
+    "name": "RO Housing Wrench Set",
+    "category": "Tools",
+    "price": 15,
+    "image": "Assets/Images/wrenchset.jpg",
+    "specs": {
+      "material": "PP Plastic",
+      "fits": "10 & 20 inch Housing"
+    },
+    "description": "Wrench set for opening RO filter housings."
+  },
+  {
+    "id": 17,
+    "name": "PureFlow Car Wash RO Machine",
+    "category": "Business Solution",
+    "price": 1200,
+    "image": "Assets/Images/carwashro.jpg",
+    "specs": {
+      "capacity": "150 L/hr",
+      "material": "Stainless Steel",
+      "function": "Spot-Free Rinse"
+    },
+    "description": "RO system designed specifically for car wash centers."
+  },
+  {
+    "id": 18,
+    "name": "Anti-Scalant Dosing System",
+    "category": "Industrial Accessory",
+    "price": 199,
+    "image": "Assets/Images/antiscalant.jpg",
+    "specs": {
+      "tank_size": "500 mL",
+      "pump": "Adjustable",
+      "function": "Prevents Membrane Scaling"
+    },
+    "description": "Chemical dosing system for industrial RO plants."
+  },
+  {
+    "id": 19,
+    "name": "RO Backwashable Sand Filter",
+    "category": "Pre-Treatment System",
+    "price": 480,
+    "image": "Assets/Images/sandfilter.jpg",
+    "specs": {
+      "type": "Multi-Media",
+      "flow_rate": "10–20 m³/hr",
+      "feature": "Auto Backwash Valve"
+    },
+    "description": "Large sand filter for industrial RO pre-treatment."
+  },
+  {
+    "id": 20,
+    "name": "TDS Digital Water Tester",
+    "category": "Measurement Tool",
+    "price": 20,
+    "image": "Assets/Images/tdstester.jpg",
+    "specs": {
+      "range": "0–9999 ppm",
+      "feature": "Auto Temp Compensation",
+      "type": "Portable"
+    },
+    "description": "Digital tester for checking water quality and TDS level."
+  }
+]
