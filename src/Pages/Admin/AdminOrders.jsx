@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../Components/AdminLayout';
-import { getAllOrders, updateOrderStatus } from '../../utils/orderService';
+import api from '../../utils/api';
 
-export default function AdminOrders() {
+export default function OrderList() {
     const [orders, setOrders] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [statusFilter, setStatusFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         loadOrders();
@@ -17,9 +19,18 @@ export default function AdminOrders() {
         filterOrders();
     }, [orders, statusFilter, searchQuery]);
 
-    const loadOrders = () => {
-        const allOrders = getAllOrders();
-        setOrders(allOrders);
+    const loadOrders = async () => {
+        setLoading(true);
+        try {
+            const { data } = await api.get('/orders');
+            setOrders(data);
+            setError('');
+        } catch (err) {
+            setError('Failed to load orders.');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const filterOrders = () => {
@@ -33,9 +44,9 @@ export default function AdminOrders() {
         // Filter by search query
         if (searchQuery) {
             filtered = filtered.filter(order =>
-                order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                order.customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                order.customer.email.toLowerCase().includes(searchQuery.toLowerCase())
+                (order._id && order._id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.customer.name && order.customer.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (order.customer.email && order.customer.email.toLowerCase().includes(searchQuery.toLowerCase()))
             );
         }
 
@@ -45,9 +56,14 @@ export default function AdminOrders() {
         setFilteredOrders(filtered);
     };
 
-    const handleStatusUpdate = (orderId, newStatus) => {
-        updateOrderStatus(orderId, newStatus);
-        loadOrders();
+    const handleStatusUpdate = async (orderId, newStatus) => {
+        try {
+            await api.put(`/orders/${orderId}/status`, { status: newStatus });
+            loadOrders();
+        } catch (err) {
+            alert('Error updating order status');
+            console.error(err);
+        }
     };
 
     const statusColors = {
@@ -61,7 +77,8 @@ export default function AdminOrders() {
         <AdminLayout>
             <div className="p-8">
                 {/* Header */}
-                <div className="mb-8">
+                <div className="mb-4">
+
                     <h1 className="text-3xl font-bold text-slate-800 mb-2">Order Management</h1>
                     <p className="text-slate-600">Manage and track all customer orders</p>
                 </div>
@@ -119,9 +136,9 @@ export default function AdminOrders() {
                                 </thead>
                                 <tbody>
                                     {filteredOrders.map((order) => (
-                                        <tr key={order.id} className="border-b border-slate-100 hover:bg-slate-50">
+                                        <tr key={order._id} className="border-b border-slate-100 hover:bg-slate-50">
                                             <td className="py-4 px-6">
-                                                <span className="font-mono text-sm text-slate-700">{order.id}</span>
+                                                <span className="font-mono text-sm text-slate-700 truncate max-w-[150px] inline-block">{order._id}</span>
                                             </td>
                                             <td className="py-4 px-6">
                                                 <div>
@@ -138,7 +155,7 @@ export default function AdminOrders() {
                                             <td className="py-4 px-6">
                                                 <select
                                                     value={order.status}
-                                                    onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                                                    onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
                                                     className={`px-3 py-1 rounded-full text-xs font-semibold capitalize cursor-pointer border-0 ${statusColors[order.status]}`}
                                                 >
                                                     <option value="pending">Pending</option>
@@ -198,7 +215,7 @@ export default function AdminOrders() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <p className="text-sm text-slate-500 mb-1">Order ID</p>
-                                    <p className="font-mono text-sm font-semibold">{selectedOrder.id}</p>
+                                    <p className="font-mono text-sm font-semibold truncate max-w-[200px]">{selectedOrder._id}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm text-slate-500 mb-1">Date</p>
@@ -235,7 +252,7 @@ export default function AdminOrders() {
                                 <h3 className="font-bold text-slate-800 mb-3">Order Items</h3>
                                 <div className="space-y-3">
                                     {selectedOrder.items.map((item) => (
-                                        <div key={item.id} className="flex gap-4 p-3 bg-slate-50 rounded-lg">
+                                        <div key={item._id || item.product} className="flex gap-4 p-3 bg-slate-50 rounded-lg">
                                             <img
                                                 src={item.image}
                                                 alt={item.name}

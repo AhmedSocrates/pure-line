@@ -20,6 +20,8 @@ import OrderConfirmation from './Pages/OrderConfirmation';
 import AdminLogin from './Pages/Admin/AdminLogin';
 import AdminDashboard from './Pages/Admin/AdminDashboard';
 import AdminOrders from './Pages/Admin/AdminOrders';
+import ProductList from './Pages/Admin/ProductList';
+import ProductEditScreen from './Pages/Admin/ProductEditScreen';
 
 export default function App() {
   return (
@@ -40,6 +42,30 @@ export default function App() {
           element={
             <ProtectedRoute>
               <AdminOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute>
+              <ProductList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/products/new"
+          element={
+            <ProtectedRoute>
+              <ProductEditScreen />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/products/:id/edit"
+          element={
+            <ProtectedRoute>
+              <ProductEditScreen />
             </ProtectedRoute>
           }
         />

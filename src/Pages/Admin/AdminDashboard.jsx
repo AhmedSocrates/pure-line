@@ -1,21 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminLayout from '../../Components/AdminLayout';
-import { getOrderStats } from '../../utils/orderService';
+import api from '../../utils/api';
 
 export default function AdminDashboard() {
     const [stats, setStats] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        const orderStats = getOrderStats();
-        setStats(orderStats);
+        fetchDashboardData();
     }, []);
 
-    if (!stats) {
+    const fetchDashboardData = async () => {
+        try {
+            const { data: orders } = await api.get('/orders');
+
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+
+            const statusBreakdown = {
+                pending: orders.filter(o => o.status === 'pending').length,
+                processing: orders.filter(o => o.status === 'processing').length,
+                completed: orders.filter(o => o.status === 'completed').length,
+                cancelled: orders.filter(o => o.status === 'cancelled').length
+            };
+
+            const recentOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+
+            setStats({
+                totalOrders,
+                totalRevenue,
+                statusBreakdown,
+                recentOrders
+            });
+        } catch (err) {
+            console.error('Error fetching dashboard data:', err);
+            setError('Failed to load dashboard data.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
         return (
             <AdminLayout>
                 <div className="flex items-center justify-center h-screen">
-                    <div className="text-xl text-slate-600">Loading...</div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+                </div>
+            </AdminLayout>
+        );
+    }
+
+    if (error || !stats) {
+        return (
+            <AdminLayout>
+                <div className="flex items-center justify-center h-screen">
+                    <div className="text-xl text-red-600">{error || 'Something went wrong.'}</div>
                 </div>
             </AdminLayout>
         );
@@ -170,15 +211,15 @@ export default function AdminDashboard() {
                                 </thead>
                                 <tbody>
                                     {stats.recentOrders.map((order) => (
-                                        <tr key={order.id} className="border-b border-slate-100 hover:bg-slate-50">
-                                            <td className="py-3 px-4 text-sm font-mono text-slate-700">{order.id}</td>
+                                        <tr key={order._id} className="border-b border-slate-100 hover:bg-slate-50">
+                                            <td className="py-3 px-4 text-sm font-mono text-slate-700 truncate max-w-[120px] inline-block">{order._id}</td>
                                             <td className="py-3 px-4 text-sm text-slate-700">{order.customer.name}</td>
                                             <td className="py-3 px-4 text-sm font-bold text-cyan-600">${order.total.toFixed(2)}</td>
                                             <td className="py-3 px-4">
                                                 <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold capitalize ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                        order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                                                            order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                                                'bg-red-100 text-red-800'
+                                                    order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                                                        order.status === 'completed' ? 'bg-green-100 text-green-800' :
+                                                            'bg-red-100 text-red-800'
                                                     }`}>
                                                     {order.status}
                                                 </span>

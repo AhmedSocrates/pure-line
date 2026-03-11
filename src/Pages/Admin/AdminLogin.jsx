@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../utils/api';
 
 export default function AdminLogin() {
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({
-        username: '',
+        email: '',
         password: ''
     });
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
-        // Hardcoded credentials
-        if (credentials.username === 'admin' && credentials.password === 'admin123') {
-            // Store auth token
-            localStorage.setItem('pureline_admin_token', 'authenticated');
+        try {
+            const { data } = await api.post('/auth/login', credentials);
+
+            // Check if user is admin
+            if (data.role !== 'admin') {
+                setError('Access denied. Admin privileges required.');
+                return;
+            }
+
+            // Store auth token and user info
+            localStorage.setItem('pureline_auth_token', data.token);
+            localStorage.setItem('pureline_user', JSON.stringify(data));
+
             navigate('/admin/dashboard');
-        } else {
-            setError('Invalid username or password');
+        } catch (err) {
+            setError(err.response?.data?.message || 'Invalid email or password');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -47,14 +61,14 @@ export default function AdminLogin() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                Username
+                                Email Address
                             </label>
                             <input
-                                type="text"
-                                value={credentials.username}
-                                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                                type="email"
+                                value={credentials.email}
+                                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                                 className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                                placeholder="Enter username"
+                                placeholder="admin@pureline.com"
                                 required
                             />
                         </div>
@@ -73,15 +87,19 @@ export default function AdminLogin() {
                             />
                         </div>
 
-                        <button type="submit" className="w-full btn-primary">
-                            Sign In
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {loading ? 'Signing In...' : 'Sign In'}
                         </button>
                     </form>
 
                     {/* Demo Credentials */}
                     <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
                         <p className="text-xs text-slate-600 font-semibold mb-2">Demo Credentials:</p>
-                        <p className="text-xs text-slate-600">Username: <code className="bg-white px-2 py-1 rounded">admin</code></p>
+                        <p className="text-xs text-slate-600">Email: <code className="bg-white px-2 py-1 rounded">admin@pureline.com</code></p>
                         <p className="text-xs text-slate-600">Password: <code className="bg-white px-2 py-1 rounded">admin123</code></p>
                     </div>
                 </div>

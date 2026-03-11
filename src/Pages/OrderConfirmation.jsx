@@ -1,21 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getOrderById } from '../utils/orderService';
+import api from '../utils/api';
 
 export default function OrderConfirmation() {
     const { orderId } = useParams();
     const [order, setOrder] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const orderData = getOrderById(orderId);
-        setOrder(orderData);
+        const fetchOrder = async () => {
+            setLoading(true);
+            try {
+                // Note: The backend route /api/orders/:id might require being logged in 
+                // OR it might have logic to allow viewing if the token matches.
+                // For now, we use our api utility which attaches the token.
+                const { data } = await api.get(`/orders/${orderId}`);
+                setOrder(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching order:', err);
+                setError('Order not found or access denied.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (orderId) {
+            fetchOrder();
+        }
     }, [orderId]);
 
-    if (!order) {
+    if (loading) {
         return (
             <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+            </div>
+        );
+    }
+
+    if (error || !order) {
+        return (
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="text-center p-8 bg-white rounded-2xl shadow-sm border border-slate-100">
                     <h2 className="text-3xl font-bold text-slate-800 mb-4">Order Not Found</h2>
+                    <p className="text-slate-500 mb-6">We couldn't find the order with ID: {orderId}</p>
                     <Link to="/products" className="btn-primary">
                         Continue Shopping
                     </Link>
@@ -52,7 +81,7 @@ export default function OrderConfirmation() {
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                 <div>
                                     <p className="text-sm text-slate-500">Order Number</p>
-                                    <p className="text-lg font-bold text-cyan-600">{order.id}</p>
+                                    <p className="text-lg font-bold text-cyan-600 truncate max-w-[200px]">{order._id}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm text-slate-500">Order Date</p>
@@ -98,7 +127,7 @@ export default function OrderConfirmation() {
                             <h3 className="text-lg font-bold text-slate-800 mb-4">Order Items</h3>
                             <div className="space-y-4">
                                 {order.items.map((item) => (
-                                    <div key={item.id} className="flex gap-4 pb-4 border-b border-slate-100 last:border-0">
+                                    <div key={item._id || item.product} className="flex gap-4 pb-4 border-b border-slate-100 last:border-0">
                                         <img
                                             src={item.image}
                                             alt={item.name}
@@ -130,18 +159,18 @@ export default function OrderConfirmation() {
                             <div className="space-y-3">
                                 <div className="flex justify-between text-slate-600">
                                     <span>Subtotal</span>
-                                    <span className="font-semibold">${order.subtotal.toFixed(2)}</span>
+                                    <span className="font-semibold">${order.subtotal?.toFixed(2) || '0.00'}</span>
                                 </div>
                                 <div className="flex justify-between text-slate-600">
                                     <span>Shipping</span>
                                     <span className="font-semibold">
-                                        {order.shipping === 0 ? 'FREE' : `$${order.shipping.toFixed(2)}`}
+                                        {order.shipping === 0 ? 'FREE' : `$${order.shipping?.toFixed(2) || '0.00'}`}
                                     </span>
                                 </div>
                                 <div className="border-t pt-3">
                                     <div className="flex justify-between text-xl font-bold">
                                         <span className="text-slate-800">Total</span>
-                                        <span className="text-gradient">${order.total.toFixed(2)}</span>
+                                        <span className="text-gradient">${order.total?.toFixed(2) || '0.00'}</span>
                                     </div>
                                 </div>
                             </div>

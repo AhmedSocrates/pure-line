@@ -39,13 +39,13 @@ export default function Cart() {
                     <div className="lg:col-span-2 space-y-4">
                         {cart.map((item) => (
                             <div
-                                key={item.id}
+                                key={item._id}
                                 className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300"
                             >
                                 <div className="flex flex-col sm:flex-row gap-6">
                                     {/* Product Image */}
                                     <Link
-                                        to={`/products/${item.id}`}
+                                        to={`/products/${item._id}`}
                                         className="w-full sm:w-32 h-32 flex-shrink-0 bg-slate-50 rounded-lg overflow-hidden"
                                     >
                                         <img
@@ -63,7 +63,7 @@ export default function Cart() {
                                         <div className="flex justify-between items-start mb-2">
                                             <div>
                                                 <Link
-                                                    to={`/products/${item.id}`}
+                                                    to={`/products/${item._id}`}
                                                     className="text-lg font-bold text-slate-800 hover:text-cyan-600 transition-colors"
                                                 >
                                                     {item.name}
@@ -71,7 +71,7 @@ export default function Cart() {
                                                 <p className="text-sm text-slate-500 mt-1">{item.category}</p>
                                             </div>
                                             <button
-                                                onClick={() => removeFromCart(item.id)}
+                                                onClick={() => removeFromCart(item._id)}
                                                 className="text-red-500 hover:text-red-700 transition-colors p-2"
                                                 title="Remove from cart"
                                             >
@@ -85,7 +85,7 @@ export default function Cart() {
                                             {/* Quantity Controls */}
                                             <div className="flex items-center gap-3">
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                    onClick={() => updateQuantity(item._id, item.quantity - 1)}
                                                     className="w-8 h-8 rounded-lg border-2 border-slate-300 hover:border-cyan-500 hover:bg-cyan-50 transition-all duration-300 flex items-center justify-center font-bold"
                                                 >
                                                     −
@@ -94,7 +94,7 @@ export default function Cart() {
                                                     {item.quantity}
                                                 </span>
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    onClick={() => updateQuantity(item._id, item.quantity + 1)}
                                                     className="w-8 h-8 rounded-lg border-2 border-slate-300 hover:border-cyan-500 hover:bg-cyan-50 transition-all duration-300 flex items-center justify-center font-bold"
                                                 >
                                                     +

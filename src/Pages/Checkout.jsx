@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../Context/CartContext';
-import { createOrder } from '../utils/orderService';
+import api from '../utils/api';
 
 export default function Checkout() {
     const navigate = useNavigate();
@@ -67,24 +67,41 @@ export default function Checkout() {
         setIsSubmitting(true);
 
         try {
-            // Create order
-            const shippingCost = getCartTotal() >= 500 ? 0 : 25;
-            const order = createOrder({
+            // Calculate costs
+            const subtotal = getCartTotal();
+            const shippingCost = subtotal >= 500 ? 0 : 25;
+            const total = subtotal + shippingCost;
+
+            // Map cart items to the backend format
+            const orderItems = cart.map(item => ({
+                product: item._id, // MongoDB _id
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                image: item.image,
+                category: item.category
+            }));
+
+            // Create order via API
+            const response = await api.post('/orders', {
                 customer: formData,
-                items: cart,
-                subtotal: getCartTotal(),
+                items: orderItems,
+                subtotal,
                 shipping: shippingCost,
-                total: getCartTotal() + shippingCost
+                total
             });
+
+            const createdOrder = response.data;
 
             // Clear cart
             clearCart();
 
             // Navigate to confirmation page
-            navigate(`/order-confirmation/${order.id}`);
+            navigate(`/order-confirmation/${createdOrder._id}`);
         } catch (error) {
             console.error('Error creating order:', error);
-            alert('There was an error processing your order. Please try again.');
+            const errorMessage = error.response?.data?.message || 'There was an error processing your order. Please try again.';
+            alert(errorMessage);
         } finally {
             setIsSubmitting(false);
         }
@@ -257,7 +274,7 @@ export default function Checkout() {
                             {/* Cart Items */}
                             <div className="space-y-4 mb-6 max-h-64 overflow-y-auto">
                                 {cart.map((item) => (
-                                    <div key={item.id} className="flex gap-3">
+                                    <div key={item._id} className="flex gap-3">
                                         <img
                                             src={item.image}
                                             alt={item.name}

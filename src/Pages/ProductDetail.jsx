@@ -1,22 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../Context/CartContext';
-import productsData from '../Data/products.json';
+import api from '../utils/api';
 
 export default function ProductDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { addToCart } = useCart();
+    const [product, setProduct] = useState(null);
+    const [relatedProducts, setRelatedProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const product = productsData.find(p => p.id === parseInt(id));
+    useEffect(() => {
+        const fetchProductData = async () => {
+            setLoading(true);
+            try {
+                // Fetch current product
+                const { data: productData } = await api.get(`/products/${id}`);
+                setProduct(productData);
 
-    if (!product) {
+                // Fetch related products (same category)
+                const { data: relatedData } = await api.get('/products', {
+                    params: { category: productData.category }
+                });
+                setRelatedProducts(relatedData.filter(p => p._id !== id).slice(0, 4));
+
+                setError(null);
+            } catch (err) {
+                setError('Product not found or error loading data.');
+                console.error('Error fetching product:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProductData();
+        // Reset quantity when ID changes
+        setQuantity(1);
+    }, [id]);
+
+    const handleAddToCart = () => {
+        if (product) {
+            addToCart(product, quantity);
+            setAddedToCart(true);
+            setTimeout(() => setAddedToCart(false), 2000);
+        }
+    };
+
+    const handleBuyNow = () => {
+        if (product) {
+            addToCart(product, quantity);
+            navigate('/cart');
+        }
+    };
+
+    if (loading) {
         return (
             <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+            </div>
+        );
+    }
+
+    if (error || !product) {
+        return (
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="text-center p-8 bg-white rounded-2xl shadow-sm border border-slate-100">
                     <h2 className="text-3xl font-bold text-slate-800 mb-4">Product Not Found</h2>
+                    <p className="text-slate-500 mb-6">{error || "The product you're looking for doesn't exist."}</p>
                     <Link to="/products" className="btn-primary">
                         Back to Products
                     </Link>
@@ -24,17 +78,6 @@ export default function ProductDetail() {
             </div>
         );
     }
-
-    const handleAddToCart = () => {
-        addToCart(product, quantity);
-        setAddedToCart(true);
-        setTimeout(() => setAddedToCart(false), 2000);
-    };
-
-    const handleBuyNow = () => {
-        addToCart(product, quantity);
-        navigate('/cart');
-    };
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -54,11 +97,11 @@ export default function ProductDetail() {
             <div className="container-max py-12">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Product Image */}
-                    <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+                    <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 h-fit">
                         <img
                             src={product.image}
                             alt={product.name}
-                            className="w-full h-auto object-contain rounded-lg"
+                            className="w-full h-auto max-h-[500px] object-contain rounded-lg"
                             onError={(e) => {
                                 e.target.src = 'https://images.unsplash.com/photo-1585837575652-2c962605a207?auto=format&fit=crop&q=80&w=800';
                             }}
@@ -92,21 +135,23 @@ export default function ProductDetail() {
                         </p>
 
                         {/* Specifications */}
-                        <div className="bg-slate-50 rounded-xl p-6 mb-8 border border-slate-200">
-                            <h3 className="text-xl font-bold text-slate-800 mb-4">Specifications</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {Object.entries(product.specs).map(([key, value]) => (
-                                    <div key={key} className="flex flex-col">
-                                        <span className="text-sm text-slate-500 capitalize mb-1">
-                                            {key.replace(/_/g, ' ')}
-                                        </span>
-                                        <span className="text-slate-800 font-semibold">
-                                            {value}
-                                        </span>
-                                    </div>
-                                ))}
+                        {product.specs && Object.keys(product.specs).length > 0 && (
+                            <div className="bg-slate-50 rounded-xl p-6 mb-8 border border-slate-200">
+                                <h3 className="text-xl font-bold text-slate-800 mb-4">Specifications</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {Object.entries(product.specs).map(([key, value]) => (
+                                        <div key={key} className="flex flex-col">
+                                            <span className="text-sm text-slate-500 capitalize mb-1">
+                                                {key.replace(/_/g, ' ')}
+                                            </span>
+                                            <span className="text-slate-800 font-semibold">
+                                                {value}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Quantity Selector */}
                         <div className="mb-8">
@@ -179,16 +224,14 @@ export default function ProductDetail() {
                 </div>
 
                 {/* Related Products Section */}
-                <div className="mt-20">
-                    <h2 className="text-3xl font-bold text-slate-800 mb-8">Related Products</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {productsData
-                            .filter(p => p.category === product.category && p.id !== product.id)
-                            .slice(0, 4)
-                            .map(relatedProduct => (
+                {relatedProducts.length > 0 && (
+                    <div className="mt-20">
+                        <h2 className="text-3xl font-bold text-slate-800 mb-8">Related Products</h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {relatedProducts.map(relatedProduct => (
                                 <Link
-                                    key={relatedProduct.id}
-                                    to={`/products/${relatedProduct.id}`}
+                                    key={relatedProduct._id}
+                                    to={`/products/${relatedProduct._id}`}
                                     className="group bg-white rounded-xl p-4 shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-100"
                                 >
                                     <div className="h-40 mb-3 overflow-hidden rounded-lg">
@@ -207,8 +250,9 @@ export default function ProductDetail() {
                                     <p className="text-cyan-600 font-bold">${relatedProduct.price}</p>
                                 </Link>
                             ))}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );
