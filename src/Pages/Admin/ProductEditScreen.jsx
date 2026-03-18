@@ -162,7 +162,7 @@ export default function ProductEditScreen() {
                                 {/* Price */}
                                 <div>
                                     <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                        Price ($)
+                                        Price (AED)
                                     </label>
                                     <input
                                         type="number"

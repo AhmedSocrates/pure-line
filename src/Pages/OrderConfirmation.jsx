@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../utils/api';
+import { formatPrice } from '../utils/formatters';
 
 export default function OrderConfirmation() {
     const { orderId } = useParams();
@@ -140,12 +141,12 @@ export default function OrderConfirmation() {
                                             <h4 className="font-semibold text-slate-800">{item.name}</h4>
                                             <p className="text-sm text-slate-500">{item.category}</p>
                                             <p className="text-sm text-slate-600 mt-1">
-                                                Quantity: {item.quantity} × ${item.price}
+                                                Quantity: {item.quantity} × {formatPrice(item.price)}
                                             </p>
                                         </div>
                                         <div className="text-right">
                                             <p className="font-bold text-cyan-600">
-                                                ${(item.price * item.quantity).toFixed(2)}
+                                                {formatPrice(item.price * item.quantity)}
                                             </p>
                                         </div>
                                     </div>
@@ -159,18 +160,18 @@ export default function OrderConfirmation() {
                             <div className="space-y-3">
                                 <div className="flex justify-between text-slate-600">
                                     <span>Subtotal</span>
-                                    <span className="font-semibold">${order.subtotal?.toFixed(2) || '0.00'}</span>
+                                    <span className="font-semibold">{formatPrice(order.subtotal || 0)}</span>
                                 </div>
                                 <div className="flex justify-between text-slate-600">
                                     <span>Shipping</span>
                                     <span className="font-semibold">
-                                        {order.shipping === 0 ? 'FREE' : `$${order.shipping?.toFixed(2) || '0.00'}`}
+                                        {order.shipping === 0 ? 'FREE' : formatPrice(order.shipping || 0)}
                                     </span>
                                 </div>
                                 <div className="border-t pt-3">
                                     <div className="flex justify-between text-xl font-bold">
                                         <span className="text-slate-800">Total</span>
-                                        <span className="text-gradient">${order.total?.toFixed(2) || '0.00'}</span>
+                                        <span className="text-gradient">{formatPrice(order.total || 0)}</span>
                                     </div>
                                 </div>
                             </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatPrice } from '../utils/formatters';
 
 export default function BusinessSection() {
     return (
@@ -70,7 +71,7 @@ export default function BusinessSection() {
                             <div className="flex items-center justify-between border-t border-slate-700 pt-6">
                                 <div>
                                     <p className="text-sm text-slate-400">Starting at</p>
-                                    <p className="text-2xl font-bold text-white">$4,999</p>
+                                    <p className="text-2xl font-bold text-white">{formatPrice(4999)}</p>
                                 </div>
                                 <button className="px-6 py-2 rounded-lg bg-slate-700 hover:bg-cyan-600 text-white transition-colors duration-300">
                                     View Specs

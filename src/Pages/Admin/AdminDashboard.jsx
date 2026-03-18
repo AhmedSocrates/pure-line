@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminLayout from '../../Components/AdminLayout';
 import api from '../../utils/api';
+import { formatPrice } from '../../utils/formatters';
 
 export default function AdminDashboard() {
     const [stats, setStats] = useState(null);
@@ -72,7 +73,7 @@ export default function AdminDashboard() {
         },
         {
             title: 'Total Revenue',
-            value: `$${stats.totalRevenue.toFixed(2)}`,
+            value: formatPrice(stats.totalRevenue),
             icon: '💰',
             color: 'from-green-500 to-green-600',
             textColor: 'text-green-600'
@@ -214,7 +215,7 @@ export default function AdminDashboard() {
                                         <tr key={order._id} className="border-b border-slate-100 hover:bg-slate-50">
                                             <td className="py-3 px-4 text-sm font-mono text-slate-700 truncate max-w-[120px] inline-block">{order._id}</td>
                                             <td className="py-3 px-4 text-sm text-slate-700">{order.customer.name}</td>
-                                            <td className="py-3 px-4 text-sm font-bold text-cyan-600">${order.total.toFixed(2)}</td>
+                                            <td className="py-3 px-4 text-sm font-bold text-cyan-600">{formatPrice(order.total)}</td>
                                             <td className="py-3 px-4">
                                                 <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold capitalize ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                                                     order.status === 'processing' ? 'bg-blue-100 text-blue-800' :

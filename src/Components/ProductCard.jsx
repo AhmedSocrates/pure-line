@@ -44,7 +44,7 @@ export default function ProductCard({ product }) {
                 {/* Price and Actions */}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-200">
                     <span className="text-2xl font-bold text-cyan-600">
-                        ${product.price}
+                        AED{product.price}
                     </span>
                     <div className="flex gap-2">
                         <button

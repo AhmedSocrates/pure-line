@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../Context/CartContext';
 import api from '../utils/api';
+import { formatPrice } from '../utils/formatters';
 
 export default function Checkout() {
     const navigate = useNavigate();
@@ -289,7 +290,7 @@ export default function Checkout() {
                                             </h4>
                                             <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
                                             <p className="text-sm font-bold text-cyan-600">
-                                                ${(item.price * item.quantity).toFixed(2)}
+                                                {formatPrice(item.price * item.quantity)}
                                             </p>
                                         </div>
                                     </div>
@@ -300,18 +301,18 @@ export default function Checkout() {
                             <div className="space-y-3 border-t pt-4">
                                 <div className="flex justify-between text-slate-600">
                                     <span>Subtotal</span>
-                                    <span className="font-semibold">${getCartTotal().toFixed(2)}</span>
+                                    <span className="font-semibold">{formatPrice(getCartTotal())}</span>
                                 </div>
                                 <div className="flex justify-between text-slate-600">
                                     <span>Shipping</span>
                                     <span className="font-semibold">
-                                        {shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}
+                                        {shippingCost === 0 ? 'FREE' : formatPrice(shippingCost)}
                                     </span>
                                 </div>
                                 <div className="border-t pt-3">
                                     <div className="flex justify-between text-xl font-bold text-slate-800">
                                         <span>Total</span>
-                                        <span className="text-gradient">${total.toFixed(2)}</span>
+                                        <span className="text-gradient">{formatPrice(total)}</span>
                                     </div>
                                 </div>
                             </div>

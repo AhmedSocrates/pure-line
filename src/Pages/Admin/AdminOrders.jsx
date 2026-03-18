@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../Components/AdminLayout';
 import api from '../../utils/api';
+import { formatPrice } from '../../utils/formatters';
 
 export default function OrderList() {
     const [orders, setOrders] = useState([]);
@@ -149,8 +150,9 @@ export default function OrderList() {
                                             <td className="py-4 px-6 text-sm text-slate-700">
                                                 {order.items.length} {order.items.length === 1 ? 'item' : 'items'}
                                             </td>
+
                                             <td className="py-4 px-6">
-                                                <span className="font-bold text-cyan-600">${order.total.toFixed(2)}</span>
+                                                <span className="font-bold text-cyan-600">{formatPrice(order.total)}</span>
                                             </td>
                                             <td className="py-4 px-6">
                                                 <select
@@ -229,7 +231,7 @@ export default function OrderList() {
                                 </div>
                                 <div>
                                     <p className="text-sm text-slate-500 mb-1">Total</p>
-                                    <p className="text-xl font-bold text-cyan-600">${selectedOrder.total.toFixed(2)}</p>
+                                    <p className="text-xl font-bold text-cyan-600">{formatPrice(selectedOrder.total)}</p>
                                 </div>
                             </div>
 
@@ -265,7 +267,7 @@ export default function OrderList() {
                                                 <h4 className="font-semibold text-slate-800">{item.name}</h4>
                                                 <p className="text-sm text-slate-500">{item.category}</p>
                                                 <p className="text-sm text-slate-600 mt-1">
-                                                    {item.quantity} × ${item.price} = <span className="font-bold text-cyan-600">${(item.price * item.quantity).toFixed(2)}</span>
+                                                    {item.quantity} × {formatPrice(item.price)} = <span className="font-bold text-cyan-600">{formatPrice(item.price * item.quantity)}</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -278,17 +280,17 @@ export default function OrderList() {
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-slate-600">
                                         <span>Subtotal</span>
-                                        <span className="font-semibold">${selectedOrder.subtotal.toFixed(2)}</span>
+                                        <span className="font-semibold">{formatPrice(selectedOrder.subtotal)}</span>
                                     </div>
                                     <div className="flex justify-between text-slate-600">
                                         <span>Shipping</span>
                                         <span className="font-semibold">
-                                            {selectedOrder.shipping === 0 ? 'FREE' : `$${selectedOrder.shipping.toFixed(2)}`}
+                                            {selectedOrder.shipping === 0 ? 'FREE' : formatPrice(selectedOrder.shipping)}
                                         </span>
                                     </div>
                                     <div className="border-t pt-2 flex justify-between text-lg font-bold">
                                         <span>Total</span>
-                                        <span className="text-cyan-600">${selectedOrder.total.toFixed(2)}</span>
+                                        <span className="text-cyan-600">{formatPrice(selectedOrder.total)}</span>
                                     </div>
                                 </div>
                             </div>

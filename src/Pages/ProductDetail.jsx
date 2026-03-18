@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../Context/CartContext';
 import api from '../utils/api';
+import { formatPrice } from '../utils/formatters';
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -125,7 +126,7 @@ export default function ProductDetail() {
                         {/* Price */}
                         <div className="mb-6">
                             <span className="text-5xl font-bold text-gradient">
-                                ${product.price}
+                                {formatPrice(product.price)}
                             </span>
                         </div>
 
@@ -208,7 +209,7 @@ export default function ProductDetail() {
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <span className="text-cyan-600">✓</span>
-                                    <span>Free shipping on orders over $500</span>
+                                    <span>Free shipping on orders over {formatPrice(500)}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <span className="text-cyan-600">✓</span>
@@ -247,7 +248,7 @@ export default function ProductDetail() {
                                     <h4 className="font-semibold text-slate-800 mb-2 line-clamp-2">
                                         {relatedProduct.name}
                                     </h4>
-                                    <p className="text-cyan-600 font-bold">${relatedProduct.price}</p>
+                                    <p className="text-cyan-600 font-bold">{formatPrice(relatedProduct.price)}</p>
                                 </Link>
                             ))}
                         </div>

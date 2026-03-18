@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../Context/CartContext';
+import { formatPrice } from '../utils/formatters';
 
 export default function Cart() {
     const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
@@ -104,10 +105,10 @@ export default function Cart() {
                                             {/* Price */}
                                             <div className="text-right">
                                                 <p className="text-2xl font-bold text-cyan-600">
-                                                    ${(item.price * item.quantity).toFixed(2)}
+                                                    {formatPrice(item.price * item.quantity)}
                                                 </p>
                                                 <p className="text-sm text-slate-500">
-                                                    ${item.price} each
+                                                    {formatPrice(item.price)} each
                                                 </p>
                                             </div>
                                         </div>
@@ -137,12 +138,12 @@ export default function Cart() {
                             <div className="space-y-4 mb-6">
                                 <div className="flex justify-between text-slate-600">
                                     <span>Subtotal</span>
-                                    <span className="font-semibold">${getCartTotal().toFixed(2)}</span>
+                                    <span className="font-semibold">{formatPrice(getCartTotal())}</span>
                                 </div>
                                 <div className="flex justify-between text-slate-600">
                                     <span>Shipping</span>
                                     <span className="font-semibold">
-                                        {getCartTotal() >= 500 ? 'FREE' : '$25.00'}
+                                        {getCartTotal() >= 500 ? 'FREE' : formatPrice(25)}
                                     </span>
                                 </div>
                                 {getCartTotal() >= 500 && (
@@ -154,8 +155,8 @@ export default function Cart() {
                                     <div className="flex justify-between text-xl font-bold text-slate-800">
                                         <span>Total</span>
                                         <span className="text-gradient">
-                                            ${(getCartTotal() + (getCartTotal() >= 500 ? 0 : 25)).toFixed(2)}
-                                        </span>
+                                             {formatPrice(getCartTotal() + (getCartTotal() >= 500 ? 0 : 25))}
+                                         </span>
                                     </div>
                                 </div>
                             </div>

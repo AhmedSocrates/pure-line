@@ -253,25 +253,25 @@ const products = [
 
 const seedDatabase = async () => {
     try {
-        console.log('🌱 Starting database seed...');
+        console.log(' Starting database seed...');
 
         // Clear existing data
         await Product.deleteMany();
         await User.deleteMany();
-        console.log('✅ Cleared existing data');
+        console.log(' Cleared existing data');
 
         // Insert products
         const createdProducts = await Product.insertMany(products);
-        console.log(`✅ Inserted ${createdProducts.length} products`);
+        console.log(` Inserted ${createdProducts.length} products`);
 
         // Create admin user
         const adminUser = await User.create({
             name: 'Admin',
-            email: 'admin@pureline.com',
-            password: 'admin123',
+            email: 'heussien@pureline.ae',
+            password: 'PuLine@112025',
             role: 'admin',
         });
-        console.log(`✅ Created admin user: ${adminUser.email}`);
+        console.log(` Created admin user: ${adminUser.email}`);
 
         // Create test user
         const testUser = await User.create({
@@ -280,16 +280,16 @@ const seedDatabase = async () => {
             password: 'password123',
             role: 'user',
         });
-        console.log(`✅ Created test user: ${testUser.email}`);
+        console.log(` Created test user: ${testUser.email}`);
 
-        console.log('🎉 Database seeded successfully!');
-        console.log('\n📝 Login Credentials:');
+        console.log(' Database seeded successfully!');
+        console.log('\n Login Credentials:');
         console.log('Admin: admin@pureline.com / admin123');
         console.log('User: user@test.com / password123');
 
         process.exit(0);
     } catch (error) {
-        console.error('❌ Error seeding database:', error);
+        console.error(' Error seeding database:', error);
         process.exit(1);
     }
 };

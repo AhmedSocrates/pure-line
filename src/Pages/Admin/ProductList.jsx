@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AdminLayout from '../../Components/AdminLayout';
 import api from '../../utils/api';
+import { formatPrice } from '../../utils/formatters';
 
 export default function ProductList() {
     const [products, setProducts] = useState([]);
@@ -98,7 +99,7 @@ export default function ProductList() {
                                                 <span className="px-3 py-1 bg-slate-100 rounded-full">{product.category}</span>
                                             </td>
                                             <td className="py-4 px-6">
-                                                <span className="font-bold text-cyan-600">${product.price.toFixed(2)}</span>
+                                                <span className="font-bold text-cyan-600">{formatPrice(product.price)}</span>
                                             </td>
                                             <td className="py-4 px-6">
                                                 <div className="flex gap-3">
