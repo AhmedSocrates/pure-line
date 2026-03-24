@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { formatPrice } from '../utils/formatters';
 
 export default function BusinessSection() {
@@ -16,13 +17,13 @@ export default function BusinessSection() {
                         <div className="inline-block px-4 py-1 rounded-full bg-cyan-900/50 border border-cyan-700 text-cyan-400 text-sm font-semibold tracking-wide uppercase">
                             For Business
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
                             Industrial Grade <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
                                 Water Solutions
                             </span>
                         </h2>
-                        <p className="text-slate-300 text-lg leading-relaxed">
+                        <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
                             Elevate your business with our commercial-grade filtration systems.
                             Perfect for car washes, laundromats, and industrial applications requiring
                             spot-free, purified water.
@@ -43,15 +44,15 @@ export default function BusinessSection() {
                             </div>
                         </div>
 
-                        <button className="btn-primary">
+                        <Link to="/about" className="btn-primary inline-block text-center">
                             Request a Quote
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Featured Product Card */}
                     <div className="flex-1 w-full">
-                        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-3xl p-8 hover:border-cyan-500/50 transition-all duration-300 group">
-                            <div className="relative mb-8 rounded-2xl overflow-hidden bg-white h-80 flex items-center justify-center">
+                        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-3xl p-6 sm:p-8 hover:border-cyan-500/50 transition-all duration-300 group">
+                            <div className="relative mb-8 rounded-2xl overflow-hidden bg-white h-60 sm:h-80 flex items-center justify-center">
                                 <img
                                     src="https://images.unsplash.com/photo-1605218427368-35b019b8db5c?auto=format&fit=crop&q=80&w=800"
                                     alt="Car Wash RO Machine"
@@ -62,8 +63,8 @@ export default function BusinessSection() {
                                 </div>
                             </div>
 
-                            <h3 className="text-2xl font-bold mb-2">ProWash 5000 RO System</h3>
-                            <p className="text-slate-400 mb-6">
+                            <h3 className="text-xl sm:text-2xl font-bold mb-2">ProWash 5000 RO System</h3>
+                            <p className="text-slate-400 mb-6 text-sm sm:text-base">
                                 Specialized spot-free rinse system for professional car washes.
                                 Eliminates water spots and reduces drying time.
                             </p>
@@ -71,11 +72,14 @@ export default function BusinessSection() {
                             <div className="flex items-center justify-between border-t border-slate-700 pt-6">
                                 <div>
                                     <p className="text-sm text-slate-400">Starting at</p>
-                                    <p className="text-2xl font-bold text-white">{formatPrice(4999)}</p>
+                                    <p className="text-xl sm:text-2xl font-bold text-white">{formatPrice(4999)}</p>
                                 </div>
-                                <button className="px-6 py-2 rounded-lg bg-slate-700 hover:bg-cyan-600 text-white transition-colors duration-300">
+                                <Link
+                                    to="/products"
+                                    className="px-6 py-2 rounded-lg bg-slate-700 hover:bg-cyan-600 text-white transition-colors duration-300"
+                                >
                                     View Specs
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

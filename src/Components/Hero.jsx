@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const slides = [
   {
@@ -37,8 +38,9 @@ export default function Hero() {
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            index === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
         >
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 bg-black/40 z-10" />
@@ -51,19 +53,25 @@ export default function Hero() {
           {/* Content */}
           <div className="absolute inset-0 z-20 flex items-center justify-center text-center px-4">
             <div className="max-w-4xl mx-auto space-y-6 animate-fade-in-up">
-              <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-tight leading-tight">
                 {slide.title}
               </h1>
-              <p className="text-xl md:text-2xl text-slate-200 max-w-2xl mx-auto font-light">
+              <p className="text-lg sm:text-xl md:text-2xl text-slate-200 max-w-2xl mx-auto font-light">
                 {slide.subtitle}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-                <button className="btn-primary border-none text-lg">
+                <Link
+                  to="/products"
+                  className="btn-primary border-none text-lg inline-block text-center"
+                >
                   Explore Products
-                </button>
-                <button className="px-8 py-3 rounded-full bg-transparent border-2 border-white text-white font-semibold text-lg hover:bg-white hover:text-slate-900 transition-all duration-300">
+                </Link>
+                <Link
+                  to="/about"
+                  className="px-8 py-3 rounded-full bg-transparent border-2 border-white text-white font-semibold text-lg hover:bg-white hover:text-slate-900 transition-all duration-300 inline-block text-center"
+                >
                   Contact Us
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -76,8 +84,11 @@ export default function Hero() {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-cyan-400 w-8' : 'bg-white/50 hover:bg-white'
-              }`}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide
+                ? 'bg-cyan-400 w-8'
+                : 'bg-white/50 hover:bg-white'
+            }`}
           />
         ))}
       </div>
